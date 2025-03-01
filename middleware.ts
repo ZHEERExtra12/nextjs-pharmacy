@@ -14,7 +14,7 @@ export function middleware(req: NextRequest) {
   return NextResponse.next()
 }
 
-// Apply middleware to private routes
+// middleware to private routes
 export const config = {
   matcher: ["/dashboard/:path*", "/profile/:path*"],
 };
