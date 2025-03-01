@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 export default function Home() {
   const [form, setForm] = useState<{username:string, password:string}>({username: "", password: ""});
@@ -64,7 +65,11 @@ export default function Home() {
 
             <input type="text" value={form.password} onChange={HandleInputChange} name="password" className="w-3/4 h-[30px] rounded-sm bg-gray-300 mt-2" />
 
-            <button onClick={handleLogin} className=" w-3/4 mt-4 cursor-pointer hover:bg-gray-800 font-bold bg-black text-white p-2 rounded-lg">چوونەژوورەوە</button>
+            <Link className="w-full" href={"/dashboard"}>
+            <button onClick={handleLogin} 
+            className=" w-3/4 mt-4 cursor-pointer hover:bg-gray-800 font-bold bg-black 
+            text-white p-2 rounded-lg">چوونەژوورەوە</button>
+            </Link>
           </div>
       </div>
     </div>

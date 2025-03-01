@@ -1,19 +1,20 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import jwt from "jsonwebtoken";
 
-export const middleware = async(req: Request)=>{
-    const token = (await cookies()).get("token")?.value
-    
-    if(token){
-        return NextResponse.redirect(new URL("/dashboard", req.url))
-    }
-    else{
-        return NextResponse.redirect(new URL("/", req.url))
-    }
+const SECRET_KEY = process.env.JWT_SECRET;
 
-    return NextResponse.next();
+export function middleware(req: NextRequest) {
+  const token = req.cookies.get("auth_token")?.value;
+
+  if (!token) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  return NextResponse.next()
 }
 
+// Apply middleware to private routes
 export const config = {
-    matcher: ["/dashboard"]
-}
+  matcher: ["/dashboard/:path*", "/profile/:path*"],
+};

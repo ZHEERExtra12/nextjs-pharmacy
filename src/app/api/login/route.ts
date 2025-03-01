@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 
 export async function POST(req:any) {
-
     const db = await createConnection();
     const { username, password } = await req.json();
 
@@ -26,18 +25,19 @@ export async function POST(req:any) {
             return NextResponse.json({message: "Invalid password"}, {status: 400})
         }
 
-
         const token = jwt.sign({username: user.username}, process.env.JWT_SECRET, {expiresIn: "1h"});
 
-       (await cookies()).set("token", token, {
+        // Make sure to specify the path
+        cookies().set("auth_token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-        })
-        
+            maxAge: 60 * 60, // 1 hour
+            path: "/",
+          });
         return NextResponse.json({message: "Login successful"}, {status: 200})
     }
     catch(err:any){
+        console.error("Login error:", err);
         return NextResponse.json({message: "Internal Server Error"}, {status: 500})
     }
 }
